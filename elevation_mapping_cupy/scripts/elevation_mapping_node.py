@@ -258,6 +258,9 @@ class ElevationMappingNode(Node):
         self.param.use_only_above_for_upper_bound = self.get_parameter(
             'use_only_above_for_upper_bound'
         ).get_parameter_value().bool_value
+        self.param.traversability_mask_use_upper_bound = self.get_parameter(
+            'traversability_mask_use_upper_bound'
+        ).get_parameter_value().bool_value
 
         mask_param = self.get_parameter('masked_replace_service_mask_layer_name').get_parameter_value().string_value
         topic_param = self.get_parameter('save_map_default_topic').get_parameter_value().string_value

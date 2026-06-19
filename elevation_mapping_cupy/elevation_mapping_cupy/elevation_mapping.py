@@ -560,11 +560,23 @@ class ElevationMap:
     def get_traversability(self):
         """Get the traversability layer.
 
+        By default the publish mask is is_valid only, so ray-stamped
+        upper-bound-only cells are reported as unknown (NaN) rather than as a
+        finite obstacle value. This suppresses the rolling-map leading-edge
+        artifact where visibility cleanup stamps a height step that the
+        traversability filter renders as a false obstacle line. Set
+        ``traversability_mask_use_upper_bound`` True for the legacy
+        is_valid OR is_upper_bound mask.
+
         Returns:
             traversability layer
         """
+        if self.param.traversability_mask_use_upper_bound:
+            mask = (self.elevation_map[2] + self.elevation_map[6]) > 0.5
+        else:
+            mask = self.elevation_map[2] > 0.5
         traversability = cp.where(
-            (self.elevation_map[2] + self.elevation_map[6]) > 0.5,
+            mask,
             self.elevation_map[3].copy(),
             cp.nan,
         )

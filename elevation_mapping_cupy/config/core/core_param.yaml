@@ -68,6 +68,10 @@
 
     #### Upper bound ########
     use_only_above_for_upper_bound: false
+    # Published traversability mask. false (default): keep only directly-measured (is_valid) cells; ray-stamped
+    # upper-bound-only cells become unknown. This suppresses the rolling-map leading-edge obstacle artifact.
+    # true: legacy behavior, keep is_valid OR is_upper_bound cells.
+    traversability_mask_use_upper_bound: false
 
     #### Initializer ########
     initialize_method: 'linear'                                         # Choose one from 'nearest', 'linear', 'cubic'
