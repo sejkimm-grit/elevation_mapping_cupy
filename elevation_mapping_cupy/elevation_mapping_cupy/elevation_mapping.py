@@ -36,6 +36,7 @@ from elevation_mapping_cupy.traversability_polygon import (
     transform_to_map_position,
     transform_to_map_index,
 )
+from elevation_mapping_cupy.terrain_cost import traversability_to_terrain_cost
 
 import cupy as cp
 
@@ -571,6 +572,15 @@ class ElevationMap:
         traversability = self.traversability_buffer[1:-1, 1:-1]
         return traversability
 
+    def get_terrain_cost(self):
+        return traversability_to_terrain_cost(
+            self.get_traversability(),
+            unknown_cost=self.param.terrain_cost_unknown,
+            scale=self.param.terrain_cost_scale,
+            offset=self.param.terrain_cost_offset,
+            xp=cp,
+        )
+
     def get_time(self):
         """Get the time layer.
 
@@ -654,6 +664,8 @@ class ElevationMap:
         """
         if name in self.layer_names:
             return True
+        elif name == "terrain_cost":
+            return True
         elif name in self.plugin_manager.layer_names:
             return True
         else:
@@ -679,6 +691,8 @@ class ElevationMap:
                 m = self.elevation_map[2].copy()[1:-1, 1:-1]
             elif name == "traversability":
                 m = self.get_traversability()
+            elif name == "terrain_cost":
+                m = self.get_terrain_cost()
             elif name == "time":
                 m = self.get_time()
             elif name == "upper_bound":
@@ -817,6 +831,8 @@ class ElevationMap:
         if name in self.layer_names:
             idx = self.layer_names.index(name)
             return_map = self.elevation_map[idx]
+        elif name == "terrain_cost":
+            return_map = self.get_terrain_cost()
         elif name in self.plugin_manager.layer_names:
             self.plugin_manager.update_with_name(
                 name,

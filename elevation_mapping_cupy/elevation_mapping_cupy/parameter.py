@@ -188,6 +188,9 @@ class Parameter(Serializable):
     safe_min_thresh: float = 0.5  # polygon is unsafe if there exists lower traversability than this.
     max_unsafe_n: int = 20  # if the number of cells under safe_thresh exceeds this value, polygon is unsafe.
     checker_layer: str = "traversability"  # layer used for checking safety
+    terrain_cost_unknown: float = 75.0  # cost assigned to unknown traversability cells.
+    terrain_cost_scale: float = 100.0  # scale applied to (1 - traversability).
+    terrain_cost_offset: float = 0.0  # offset added before clipping terrain cost to 0..100.
 
     max_drift: float = 0.10  # maximum drift for the compensation
 

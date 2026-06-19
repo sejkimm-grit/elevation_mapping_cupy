@@ -74,6 +74,7 @@ class TestElevationMap:
             "elevation",
             "variance",
             "traversability",
+            "terrain_cost",
             "min_filter",
             "smooth",
             "inpaint",
